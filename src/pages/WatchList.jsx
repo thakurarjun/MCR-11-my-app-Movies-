@@ -12,7 +12,12 @@ const WatchList = () => {
         setWatchlist(state)
     },[state])
 
-    console.log(watchlist,"watchlistData-==>")
+    const removeWatchList = (id) => {
+      const filterData = watchlist.filter((filterId) => id !== filterId)
+      setWatchlist(filterData)
+    }
+
+    console.log(watchlist,"watchlist")
   return (
     <Box>
         <Header />
@@ -35,7 +40,7 @@ const WatchList = () => {
         ))} </Text>
         <Box display={"flex"} justifyContent={"space-between"} p={8}>
  <Box justifyContent={"center"} alignItems={"center"}>
- <Button bg="gray.100" ml={"240px"}>Remove From Watchlist</Button>
+ <Button bg="gray.100" ml={"240px"} onClick={() => removeWatchList(watchlist?.id)}>Remove From Watchlist</Button>
  </Box>
   
         </Box>

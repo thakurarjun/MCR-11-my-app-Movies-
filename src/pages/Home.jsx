@@ -18,6 +18,7 @@ const Home = () => {
       movie.title.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredMovies(filtered);
+    
   };
 
   const handleMovieDetail = (item) => {
@@ -26,13 +27,10 @@ const Home = () => {
   };
 
 
-  const handleWatchlistData = (item) => {
-    const movieToAdd = movies.find((movie) => movie.id === item);
-    if (movieToAdd) {
-      setWatchlist((prevWatchlist) => [...prevWatchlist, movieToAdd]);
-      localStorage.setItem('watchlist', JSON.stringify([...watchlist, movieToAdd]));
-    }
-navigate("/watchlist",{state:item})
+  const handleWatchlistData = (index) => {
+    const movieToAdd = movies.filter((_,i) => i === index);
+      setWatchlist([...watchlist,movieToAdd[0]]);
+      navigate("/watchlist")
   }
 
   return (
@@ -51,21 +49,25 @@ navigate("/watchlist",{state:item})
           </Heading>
 
           <Select placeholder="All Genre" w="17%">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
+            <option value="drama">Drama </option>
+            <option value="crime">Crime</option>
+            <option value="action">Action</option>
+            <option value="adventure">Adventure</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="romance">Romance</option>
           </Select>
 
           <Select placeholder="Release Year" w="17%">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
+            <option value="1992">1992</option>
+            <option value="1994">1994 </option>
+            <option value="1998">1998</option>
+            <option value="2003">2003</option>
+            <option value="2008">2008</option>
           </Select>
 
           <Select placeholder="Rating" w="17%">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
+            <option value="1-5">1-5</option>
+            <option value="6-10">6-10</option>
           </Select>
 
           <Button bg="gray.100">Add a Movie</Button>
@@ -79,7 +81,7 @@ navigate("/watchlist",{state:item})
           overflowX="auto"
           overflowY={"auto"}
         >
-          {filteredMovies.map((item) => (
+          {filteredMovies.map((item,i) => (
             <>
               <Box
                 w="full"
@@ -96,7 +98,7 @@ navigate("/watchlist",{state:item})
                 </Box>
                 <Box>
                   <Button>Start</Button>
-                  <Button mt={5} onClick={()=>handleWatchlistData(item)}>Add to Watchlist</Button>
+                  <Button mt={5} onClick={()=>handleWatchlistData(i)}>Add to Watchlist</Button>
                 </Box>
               </Box>
             </>
