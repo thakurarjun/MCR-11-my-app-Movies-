@@ -1,20 +1,38 @@
 import { Box, Button, Heading, Select, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import Header from "../components/Header";
 import { movies } from "../data";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-const navigate = useNavigate()
+const navigate = useNavigate();
+const [searchQuery, setSearchQuery] = useState('');
+  const [filteredMovies, setFilteredMovies] = useState(movies);
+
+  const handleInputChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    const filtered = movies.filter((movie) =>
+      movie.title.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredMovies(filtered);
+  };
+  
 const handleMovieDetail = (item) => {
-   
 navigate("/movie-detail",{state:item})
 console.log(item)
 }
 
+
+
   return (
     <Box w="100%">
-      <Header />
+      <Header handleInputChange={handleInputChange}
+      setFilteredMovies={setFilteredMovies}
+      filteredMovies={filteredMovies}
+      setSearchQuery={setSearchQuery}
+      searchQuery={searchQuery}
+      />
       <Box>
         <Box display="flex" justifyContent={"space-between"} p={3}>
           <Heading as="h5" size="sm">
@@ -50,7 +68,7 @@ console.log(item)
           overflowX="auto"
           overflowY={"auto"}
         >
-          {movies.map((item) => (
+          {filteredMovies.map((item) => (
             <>
               <Box w="full" gap={6} cursor={"pointer"} onClick={() => handleMovieDetail(item)}>
                 <img src={item.imageURL} alt="img" />

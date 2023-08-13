@@ -1,14 +1,11 @@
 import { Box, Heading, Input } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { movies } from "../data";
+import { useNavigate } from "react-router-dom";
 
-const Header = () => {
-  const [searchData, setSearchData] = useState(movies);
+const Header = ({handleInputChange,searchQuery}) => {
+    const navigate = useNavigate()
 
-  const handleSearch = (e) => {
-    const filterData = searchData.filter((item) => item.title.LowerCase());
-    setSearchData(filterData);
-  };
   return (
     <Box>
       <Box
@@ -19,7 +16,7 @@ const Header = () => {
         borderRadius={"lg"}
       >
         <Box>
-          <Heading as="h4" size="md">
+          <Heading as="h4" size="md" onClick={() =>navigate("/")} cursor="pointer">
             IMBD
           </Heading>
         </Box>
@@ -28,12 +25,13 @@ const Header = () => {
           <Input
             placeholder="Search movies by title,cast...."
             shadow={"lg"}
-            onChange={handleSearch}
+            value={searchQuery}
+            onChange={handleInputChange}
           />
         </Box>
 
         <Box display={"flex"} justifyContent={"space-between"} w="25%">
-          <Heading as="h5" size="sm">
+          <Heading as="h5" size="sm" onClick={() => navigate("/")} cursor={"pointer"}>
             Movies{" "}
           </Heading>
           <Heading as="h5" size="sm">
