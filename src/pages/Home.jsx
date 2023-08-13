@@ -5,9 +5,11 @@ import { movies } from "../data";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-const navigate = useNavigate();
-const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
   const [filteredMovies, setFilteredMovies] = useState(movies);
+
+  const [watchlist, setWatchlist] = useState([]);
 
   const handleInputChange = (event) => {
     const query = event.target.value;
@@ -17,21 +19,33 @@ const [searchQuery, setSearchQuery] = useState('');
     );
     setFilteredMovies(filtered);
   };
-  
-const handleMovieDetail = (item) => {
-navigate("/movie-detail",{state:item})
-console.log(item)
-}
 
+  const handleMovieDetail = (item) => {
+    const movieToAdd = movies.find((movie) => movie.id === item);
+    if (movieToAdd) {
+      setWatchlist((prevWatchlist) => [...prevWatchlist, movieToAdd]);
+      localStorage.setItem(
+        "watchlist",
+        JSON.stringify([...watchlist, movieToAdd])
+      );
+    }
 
+    navigate("/movie-detail", { state: movieToAdd });
+    console.log(item);
+  };
+
+  const handleWatchlistData = (item) => {
+    navigate("/watchlist", { state: item });
+  };
 
   return (
     <Box w="100%">
-      <Header handleInputChange={handleInputChange}
-      setFilteredMovies={setFilteredMovies}
-      filteredMovies={filteredMovies}
-      setSearchQuery={setSearchQuery}
-      searchQuery={searchQuery}
+      <Header
+        handleInputChange={handleInputChange}
+        setFilteredMovies={setFilteredMovies}
+        filteredMovies={filteredMovies}
+        setSearchQuery={setSearchQuery}
+        searchQuery={searchQuery}
       />
       <Box>
         <Box display="flex" justifyContent={"space-between"} p={3}>
@@ -70,16 +84,19 @@ console.log(item)
         >
           {filteredMovies.map((item) => (
             <>
-              <Box w="full" gap={6} cursor={"pointer"} onClick={() => handleMovieDetail(item)}>
-                <img src={item.imageURL} alt="img" />
-                <Heading as="h4" size="md">
-                  {item.title}
-                </Heading>
-                <Text>{item.summary}</Text>
-
+              <Box w="full" gap={6}>
+                <Box cursor={"pointer"} onClick={() => handleMovieDetail(item)}>
+                  <img src={item.imageURL} alt="img" />
+                  <Heading as="h4" size="md">
+                    {item.title}
+                  </Heading>
+                  <Text>{item.summary}</Text>
+                </Box>
                 <Box>
                   <Button>Start</Button>
-                  <Button mt={5}>Add to Watchlist</Button>
+                  <Button mt={5} onClick={() => handleWatchlistData(item)}>
+                    Add to Watchlist
+                  </Button>
                 </Box>
               </Box>
             </>

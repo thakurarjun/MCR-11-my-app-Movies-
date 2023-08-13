@@ -1,6 +1,5 @@
 import { Box, Heading, Input } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { movies } from "../data";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const Header = ({handleInputChange,searchQuery}) => {
@@ -23,7 +22,7 @@ const Header = ({handleInputChange,searchQuery}) => {
 
         <Box w="40%">
           <Input
-            placeholder="Search movies by title,cast...."
+            placeholder="Search movies by title...."
             shadow={"lg"}
             value={searchQuery}
             onChange={handleInputChange}
@@ -34,7 +33,7 @@ const Header = ({handleInputChange,searchQuery}) => {
           <Heading as="h5" size="sm" onClick={() => navigate("/")} cursor={"pointer"}>
             Movies{" "}
           </Heading>
-          <Heading as="h5" size="sm">
+          <Heading as="h5" size="sm" onClick={() => navigate("/watchlist")} cursor="pointer">
             Watch List
           </Heading>
           <Heading as="h5" size="sm">
