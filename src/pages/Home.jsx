@@ -21,22 +21,19 @@ const Home = () => {
   };
 
   const handleMovieDetail = (item) => {
-    const movieToAdd = movies.find((movie) => movie.id === item);
-    if (movieToAdd) {
-      setWatchlist((prevWatchlist) => [...prevWatchlist, movieToAdd]);
-      localStorage.setItem(
-        "watchlist",
-        JSON.stringify([...watchlist, movieToAdd])
-      );
-    }
-
-    navigate("/movie-detail", { state: movieToAdd });
+    navigate("/movie-detail", { state: item });
     console.log(item);
   };
 
+
   const handleWatchlistData = (item) => {
-    navigate("/watchlist", { state: item });
-  };
+    const movieToAdd = movies.find((movie) => movie.id === item);
+    if (movieToAdd) {
+      setWatchlist((prevWatchlist) => [...prevWatchlist, movieToAdd]);
+      localStorage.setItem('watchlist', JSON.stringify([...watchlist, movieToAdd]));
+    }
+navigate("/watchlist",{state:item})
+  }
 
   return (
     <Box w="100%">
@@ -84,19 +81,22 @@ const Home = () => {
         >
           {filteredMovies.map((item) => (
             <>
-              <Box w="full" gap={6}>
-                <Box cursor={"pointer"} onClick={() => handleMovieDetail(item)}>
-                  <img src={item.imageURL} alt="img" />
-                  <Heading as="h4" size="md">
-                    {item.title}
-                  </Heading>
-                  <Text>{item.summary}</Text>
+              <Box
+                w="full"
+                gap={6}
+               
+              >
+                <Box  cursor={"pointer"}
+                onClick={() => handleMovieDetail(item)}>
+                <img src={item.imageURL} alt="img" />
+                <Heading as="h4" size="md">
+                  {item.title}
+                </Heading>
+                <Text>{item.summary}</Text>
                 </Box>
                 <Box>
                   <Button>Start</Button>
-                  <Button mt={5} onClick={() => handleWatchlistData(item)}>
-                    Add to Watchlist
-                  </Button>
+                  <Button mt={5} onClick={()=>handleWatchlistData(item)}>Add to Watchlist</Button>
                 </Box>
               </Box>
             </>
